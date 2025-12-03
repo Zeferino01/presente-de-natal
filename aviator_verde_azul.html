@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviator - Jogo de Ação e Adrenalina</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #00b84d 0%, #1abc9c 25%, #16a085 50%, #0066cc 75%, #003d99 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+
+        /* Animação de aviões voadores */
+        .flying-plane {
+            position: fixed;
+            font-size: 2em;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .plane-1 {
+            animation: flyAcross1 20s linear infinite;
+        }
+
+        .plane-2 {
+            animation: flyAcross2 25s linear infinite;
+        }
+
+        .plane-3 {
+            animation: flyAcross3 30s linear infinite;
+        }
+
+        @keyframes flyAcross1 {
+            0% {
+                left: -50px;
+                top: 10%;
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                left: 100vw;
+                top: 10%;
+                opacity: 0;
+            }
+        }
+
+        @keyframes flyAcross2 {
+            0% {
+                right: -50px;
+                top: 30%;
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                right: 100vw;
+                top: 30%;
+                opacity: 0;
+            }
+        }
+
+        @keyframes flyAcross3 {
+            0% {
+                left: -50px;
+                top: 60%;
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                left: 100vw;
+                top: 60%;
+                opacity: 0;
+            }
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: 4em;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+            animation: fadeInDown 1s ease-in-out, pulse 2s ease-in-out 1s infinite;
+        }
+
+        header p {
+            font-size: 1.5em;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-in-out 0.2s both;
+        }
+
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 184, 77, 0.15) 0%, rgba(26, 188, 156, 0.15) 25%, rgba(22, 160, 133, 0.15) 50%, rgba(0, 102, 204, 0.15) 75%, rgba(0, 61, 153, 0.15) 100%);
+            backdrop-filter: blur(10px);
+            padding: 80px 40px;
+            border-radius: 20px;
+            color: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), inset 0 0 30px rgba(255, 255, 255, 0.1);
+            animation: bounceIn 1s ease-in-out;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.8em;
+            animation: slideInDown 0.8s ease-in-out;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-section p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.3em;
+            margin-bottom: 50px;
+            animation: fadeIn 1s ease-in-out 0.2s both;
+            position: relative;
+            z-index: 2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Contentor do botão com animação indicadora */
+        .button-container {
+            position: relative;
+            display: inline-block;
+            z-index: 3;
+        }
+
+        /* Animação de seta apontando para o botão */
+        .arrow-indicator {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5em;
+            animation: bounceArrow 1.5s ease-in-out infinite;
+            z-index: 4;
+        }
+
+        @keyframes bounceArrow {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(-50%) translateY(-20px);
+                opacity: 0.7;
+            }
+        }
+
+        /* Animação de círculo pulsante ao redor do botão */
+        .pulse-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border: 3px solid #00ff00;
+            border-radius: 50px;
+            transform: translate(-50%, -50%);
+            animation: pulseRing 2s ease-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseRing {
+            0% {
+                width: 100%;
+                height: 100%;
+                opacity: 1;
+                border-color: #00ff00;
+            }
+            100% {
+                width: 150%;
+                height: 150%;
+                opacity: 0;
+                border-color: #00ff00;
+            }
+        }
+
+        .register-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #00b84d 0%, #1abc9c 50%, #0066cc 100%);
+            color: white;
+            padding: 28px 80px;
+            font-size: 1.6em;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 184, 77, 0.5), 0 0 20px rgba(26, 188, 156, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: slideInUp 0.8s ease-in-out 0.3s both, vibrate 0.5s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animação de vibração do botão */
+        @keyframes vibrate {
+            0%, 100% {
+                transform: translateX(0) translateY(0);
+            }
+            10% {
+                transform: translateX(-2px) translateY(-2px);
+            }
+            20% {
+                transform: translateX(2px) translateY(2px);
+            }
+            30% {
+                transform: translateX(-2px) translateY(2px);
+            }
+            40% {
+                transform: translateX(2px) translateY(-2px);
+            }
+            50% {
+                transform: translateX(-2px) translateY(-2px);
+            }
+            60% {
+                transform: translateX(2px) translateY(2px);
+            }
+            70% {
+                transform: translateX(-2px) translateY(2px);
+            }
+            80% {
+                transform: translateX(2px) translateY(-2px);
+            }
+            90% {
+                transform: translateX(-2px) translateY(0);
+            }
+        }
+
+        .register-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .register-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-5px) scale(1.08);
+            box-shadow: 0 12px 35px rgba(0, 184, 77, 0.7), 0 0 30px rgba(26, 188, 156, 0.5);
+            background: linear-gradient(135deg, #00ff00 0%, #00ff99 50%, #0099ff 100%);
+        }
+
+        .register-btn:active {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 30px 20px 20px;
+            font-size: 0.9em;
+            animation: fadeIn 1.5s ease-in-out;
+            position: relative;
+            z-index: 10;
+            margin-top: 60px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animações principais */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5em;
+            }
+
+            header p {
+                font-size: 1.1em;
+            }
+
+            .cta-section {
+                padding: 50px 20px;
+            }
+
+            .cta-section h2 {
+                font-size: 2em;
+            }
+
+            .cta-section p {
+                font-size: 1em;
+            }
+
+            .register-btn {
+                padding: 20px 60px;
+                font-size: 1.2em;
+            }
+
+            .arrow-indicator {
+                top: -50px;
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Aviões voadores de fundo -->
+    <div class="flying-plane plane-1">✈️</div>
+    <div class="flying-plane plane-2">✈️</div>
+    <div class="flying-plane plane-3">✈️</div>
+
+    <div class="container">
+        <header>
+            <h1>✈️ AVIATOR</h1>
+            <p>O Jogo de Ação e Adrenalina que Vai Mudar Tudo</p>
+        </header>
+
+        <div class="cta-section">
+            <h2>Pronto para Decolar?</h2>
+            <p>Junte-se a milhares de jogadores que já estão a desfrutar da experiência Aviator!</p>
+            <div class="button-container">
+                <div class="arrow-indicator">👇</div>
+                <div class="pulse-ring"></div>
+                <a href="https://txunaplay.com/t8d4b0740" class="register-btn">Registar Agora</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Aviator Game. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+</body>
+</html>
